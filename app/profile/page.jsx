@@ -247,7 +247,7 @@ function Profile() {
           />
         </div>
         <input
-          className="border-2 border-gray-300 rounded-md px-4 py-2 flex-1 focus:outline-none focus:border-blue-500 transition duration-200 mx-4 "
+          className="border-2 min-w-min w-auto border-gray-300 rounded-md px-4 py-2 flex-1 focus:outline-none focus:border-blue-500 transition duration-200 mx-4 "
           type="text"
           placeholder="Enter Word..."
           value={wordInput}
