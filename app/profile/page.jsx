@@ -221,7 +221,7 @@ function Profile() {
           ))}
         </Accordion>
       </div>
-      <div className="sticky bottom-0 left-0 right-0 p-4 flex items-center justify-center bg-white lg:left-1/4 lg:right-1/4">
+      <div className="flex sticky bottom-0 left-2 right-2 p-2 items-center justify-center bg-white lg:left-1/4 lg:right-1/4">
         <div className="flex justify-end mr-5 gap-x-4">
           <Image
             src="/delete.svg"
