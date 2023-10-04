@@ -29,7 +29,7 @@ const Herosection = () => {
         </div>
         <div className="mt-4 ml-8">
           <Image
-            src="/hero.png"
+            src="/Hero.png"
             width={300}
             height={300}
             alt="hero image glots"
