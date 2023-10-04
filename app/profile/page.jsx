@@ -31,91 +31,11 @@ import exp from "constants";
 import Link from "next/link";
 import OpenAI from "openai";
 require("dotenv").config();
-const url = "https://api.openai.com/v1/completions";
-const apikey = process.env.OPENAI_API_KEY ;
 
-const openai = new OpenAI({
-  apiKey: `${process.env.OPENAI_API_KEY}`,
-  dangerouslyAllowBrowser: true,
-});
 
 const db = getFirestore(app);
 
 function Profile() {
-  async function definition(word) {
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apikey}`,
-        },
-        body: JSON.stringify({
-          model: "text-davinci-003",
-          prompt: `in not more than 10 words, what is the meaning of ${word} in the simplest way I can understand. `,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      return data.choices[0].text;
-    } catch (error) {
-      console.error("Error:", error);
- 
-      return null;
-    }
-  }
-
-  // Usage
-  definition()
-    .then((result) => {
-      console.log(result); // This will print the desired text
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-
-  async function sentance(word) {
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apikey}`,
-        },
-        body: JSON.stringify({
-          model: "text-davinci-003",
-          prompt: `I want to learn the word ${word} so that I can be able to use it correctly. respond me with only a simple example phrase that will help me understand the best use of the word. do not explain. do not use quotes.
-            `,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      return data.choices[0].text;
-    } catch (error) {
-      console.error("Error:", error);
-      // Handle the error appropriately or return an error value if needed
-      return null;
-    }
-  }
-
-  // Usage
-  sentance("")
-    .then((result) => {
-      console.log(result); // This will print the desired text
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
 
   const { data: session } = useSession();
 
@@ -176,12 +96,33 @@ function Profile() {
 
   const [wordData, setWordData] = useState({}); // State to store word data
 
-  // Function to fetch definition and example data for a word
+
   const fetchWordData = async (word) => {
-    const wordDefinition = await definition(word); // Await the result
-    const wordExample = await sentance(word); // Await the result
-    return { define: wordDefinition, example: wordExample };
+    try {
+      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (Array.isArray(data) && data.length > 0) {
+        const meanings = data[0].meanings;
+        if (meanings && meanings.length > 0) {
+          const definition = meanings[0].definitions[0].definition;
+          const example = meanings[0].definitions[0].example;
+          return { define: definition, example: example };
+        }
+      }
+      
+      return { define: "Definition not found", example: "Example not found" };
+    } catch (error) {
+      console.error("Error fetching word data:", error);
+      return { define: "Error", example: "Error" };
+    }
   };
+  
 
   const handleAddWord = async () => {
     if (wordInput.trim()) {
@@ -242,10 +183,9 @@ function Profile() {
       <div>
         <div className="flex p-6 justify-between">
           <GlotsLogo />
-
-          <h1 className="hover:text-red-500" onClick={handleLogout}>
+          <span className="text-red-600" onClick={handleLogout}>
             Log out
-          </h1>
+          </span>
         </div>
 
         <div className="flex justify-center items-center">

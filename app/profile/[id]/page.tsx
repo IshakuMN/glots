@@ -12,6 +12,8 @@ import { GlotsLogo } from "@/components/ui/glotsLogo";
 import Image from "next/image";
 import { LiaGrinTongueSolid } from "react-icons/lia";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
+
 
 const db = getFirestore(app);
 
@@ -21,26 +23,31 @@ interface WordProps {
   };
 }
 
-export async function getStaticPaths() {
-  // Get words from DB
-  const querySnapshot = await getDocs(collection(db, "words"));
-  const paths: any = [];
 
-  querySnapshot.forEach((doc) => {
-    paths.push({
-      params: {
-        id: doc.id,
-      },
-    });
-  });
+  // // Get words from DB
+  // const querySnapshot = await getDocs(collection(db, "words"));
+  // const paths: any = [];
 
-  return {
-    paths,
-    fallback: false,
-  };
-}
+  // querySnapshot.forEach((doc) => {
+  //   paths.push({
+  //     params: {
+  //       id: doc.id,
+  //     },
+  //   });
+  // });
+
+  // return {
+  //   paths,
+  //   fallback: false,
+  // };
+
 
 export default async function Word({ params }: WordProps) {
+
+  // const router = useRouter();
+
+  // const id  = {router.query.id};
+  
   const docWord = await getDefinition(params.id);
 
   // Add a conditional check to ensure docWord is defined before accessing its properties

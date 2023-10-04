@@ -8,7 +8,7 @@ export const Testimonials = () => {
       <p className="text-center m-8 mt-16 text-2xl">Testimonials</p>
 
       <div className="flex justify-center gap-4 m-4">
-        <div>
+        <div className="">
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           </Avatar>{" "}
@@ -30,16 +30,7 @@ export const Testimonials = () => {
           </p>
         </div>
 
-        <div>
-          <Avatar>
-            <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
-          </Avatar>{" "}
-          <p className="m-2 text-sm text-justify">
-            I use Vocabulary App every day to learn new words. The daily
-            challenges keep me engaged, and I've noticed a significant
-            improvement in my writing and speaking skills.
-          </p>
-        </div>
+  
         <div>
           <Avatar>
             <AvatarImage src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
